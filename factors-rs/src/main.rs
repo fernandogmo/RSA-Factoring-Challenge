@@ -1,4 +1,4 @@
-// (c) Fernando Gonzalez-Morales, 2019
+// (C) 2019 Fernando Gonzalez-Morales
 // That's right.
 use std::env;
 use std::fs;
@@ -7,6 +7,7 @@ use rand::Rng;
 use num::BigUint;
 use num::cast::ToPrimitive;
 use num::traits::identities::One;
+use rayon::prelude::*;
 //use primal;
 
 fn main() {
@@ -16,15 +17,17 @@ fn main() {
     let nums: Vec<u128> = contents.lines()
         .filter_map(|line| line.trim().parse().ok())
         .collect();
-    for n in nums {
-        let d = pollard_rho(n);
+    nums.par_iter().for_each( |n| {
+        let d = pollard_rho(*n);
         println!("{}={}*{}", n, n / d, d);
-    }
+    });
 }
 
 fn pollard_rho(num: u128) -> u128 {
     if num == 1 { return num; }
-    if num % 2 == 0 { return 2; }
+    for p in [2, 3, 5, 7, 11, 13, 17, 19, 23, 29].iter() {
+        if num % p == 0 { return *p; }
+    }
     let k = rand::thread_rng().gen_range(2, num);
     let (mut d, mut x, mut y) = (1, k, k);
     let f = |i| (mod_pow(i, 2, num) + k + num) % num;
@@ -66,6 +69,8 @@ fn stein_gcd(m: u128, n: u128) -> u128 {
         _                                   => unreachable!(),
     }
 }
+
+//-----------------------------------------------------------
 
 // SCRATCH PAD :D
 /*  let biggest = *nums.iter().max().unwrap();
