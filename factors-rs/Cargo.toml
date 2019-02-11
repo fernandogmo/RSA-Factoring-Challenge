@@ -1,0 +1,10 @@
+[package]
+name = "factors-rs"
+version = "0.1.0"
+authors = ["Fernando Gonzalez-Morales <542@holbertonschool.com>"]
+edition = "2018"
+
+[dependencies]
+rand = "0.6.5"
+primal = "0.2.3"
+num-integer = "0.1"
