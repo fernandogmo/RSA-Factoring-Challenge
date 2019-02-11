@@ -7,4 +7,4 @@ edition = "2018"
 [dependencies]
 rand = "0.6.5"
 primal = "0.2.3"
-num-integer = "0.1"
+num = "0.2"
