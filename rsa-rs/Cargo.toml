@@ -1,9 +1,8 @@
 [package]
-name = "factors-rs"
+name = "rsa-rs"
 version = "0.1.0"
 authors = ["Fernando Gonzalez-Morales <542@holbertonschool.com>"]
 edition = "2018"
 
 [dependencies]
-rayon = "1.0"
 ramp = "0.5"

@@ -1,0 +1,1 @@
+{"rustc":4965212935385170270,"features":"[]","target":13010691323763444455,"profile":5060393583489210841,"path":1036222786711178230,"deps":[["ramp v0.5.1","ramp",3580195691139429703]],"local":[{"MtimeBased":[[1550472444,989089400],".fingerprint/rsa-rs-f6476c1ca277e046/dep-bin-rsa_rs-f6476c1ca277e046"]}],"rustflags":[],"edition":"Edition2018"}

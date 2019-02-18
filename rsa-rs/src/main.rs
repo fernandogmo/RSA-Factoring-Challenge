@@ -3,7 +3,6 @@
 #![allow(irrefutable_let_patterns)]
 use std::{env, fs};
 use ramp::Int;
-use rayon::prelude::*;
 
 
 fn main() {
@@ -14,19 +13,15 @@ fn main() {
                                                    .collect();
     let filename = env::args().nth(1).unwrap();
     let contents = fs::read_to_string(filename).unwrap();
-    let numbers: Vec<Int> = contents.par_lines()
-                            .filter_map(|line| line.parse().ok())
-                            .collect();
-    let (small, large): (Vec<_>, Vec<_>) = numbers.into_par_iter()
-                                                  .partition(|n| *n < 10000);
-    large.par_iter().for_each(|n| {
-        let (p, q) = pollard_brent(n);
+    let n: Int = contents.lines().nth(0).unwrap().parse().unwrap();
+    if n < 10000 {
+        let (p, q) = look_up(&n, &primes);
         println!("{}={}*{}", n, p, q);
-    });
-    small.par_iter().for_each(|n| {
-        let (p, q) = look_up(n, &primes);
+    }
+    else {
+        let (p, q) = pollard_brent(&n);
         println!("{}={}*{}", n, p, q);
-    });
+    }
 }
 
 /* https://stackoverflow.com/a/2274520/9221785 */
