@@ -7,3 +7,4 @@ edition = "2018"
 [dependencies]
 rayon = "1.0"
 ramp = "0.5"
+smallvec = "0.6"
