@@ -1,6 +1,5 @@
 // (C) 2019 Fernando Gonzalez-Morales
 // That's right.
-#![allow(irrefutable_let_patterns)]
 use std::{env, fs};
 use ramp::Int;
 use rayon::prelude::*;
@@ -10,22 +9,11 @@ use smallvec::SmallVec;
 
 fn main() {
     let outputs = Arc::new(Mutex::new(SmallVec::<[String; 10]>::new()));
-    let _primes: Vec<Int> = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
-                            31, 37, 41, 43, 47, 53, 59, 61, 67,
-                            71, 73, 79, 83, 89, 97].into_iter()
-                                                   .map(|x| Int::from(*x))
-                                                   .collect();
     let filename = env::args().nth(1).unwrap();
     let contents = fs::read_to_string(filename).unwrap();
-    let numbers: Vec<Int> = contents.par_lines()
-                            .filter_map(|line| line.parse().ok())
-                            .collect();
-    /*let (small, large): (Vec<Int>, Vec<Int>) = numbers.into_par_iter()
-                                                  .partition(|n| *n < 10000);*/
-    /*small.par_iter().for_each(|n| {
-        let (p, q) = look_up(n, &primes);
-        println!("{}={}*{}", n, p, q);
-    });*/
+    let numbers: Vec<Int> = contents.lines()
+        .filter_map(|line| line.parse().ok())
+        .collect();
     numbers.par_iter().for_each(|n| {
         let (p, q) = pollard_brent(n);
         let mut v = outputs.lock().unwrap();
@@ -44,15 +32,6 @@ fn main() {
     }
 }
 
-// https://stackoverflow.com/a/2274520/9221785
-fn _look_up(n: &Int, ps: &Vec<Int>) -> (Int, Int) {
-    for p in ps.iter() {
-        if let (q, r) = n.divmod(p) {
-            if r == 0 { return (p.clone(), q) };
-        }
-    }
-    (Int::one(), n.clone())
-}
 
 // Refs:
 // +http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.117.1230&rep=rep1&type=pdf
